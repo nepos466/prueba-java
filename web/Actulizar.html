@@ -1,0 +1,101 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Interfaz actualiza persona</title>
+
+      <script src="jquery-2.2.3.min.js" type="text/javascript"></script>
+      <link rel="stylesheet" href="bootstrap.css"/>
+      <link rel="stylesheet" href="css/bootstrap.css"/>
+
+
+        <script>
+            $(document).ready(function (e) {
+                // alert("probando jquery");
+                $("#guardar").click(function () {
+                    $.ajax({
+                        //url:'http://localhost:9999/mensaje/'+$("#titulo").val()+'/'+$("#cuerpo").val(),
+                        url: 'ServletActualizar',  //BUSCAR ESTE METODO 
+                        type: 'post',
+                       data: {
+                            id: $("#id").val(),
+                            nombre: $("#nombre").val(),
+                            empresa: $("#empresa").val(),
+                            edad: $("#edad").val(),
+                            telefono: $("#telefono").val()
+                        },
+                        success: function (datos) {
+                            $("#resultado").html(datos);
+                            alert(datos);
+                        },
+                        failure: function () {
+                            alert("algo muy malo paso");
+                        }
+
+                    });
+                });//Termina guardar
+                //Buscar los registros
+                $("#buscar-persona").click(function () {
+                    console.log("Buscaremos a todas las personas");
+                    $.ajax({   //para que se conecte a un servicio asincronicamente
+                        dataType: "json",  //va a recibir un formato json
+                        url: "ServletBuscar",
+                        success: function (datos) {  //datos ahi se deposita todo el json 
+                            $("#mis-personas").html("");   //length dice cuantos elemntos tiene
+                            $.each(datos, function (key, val) {
+                              $("#mis-personas").append("<tr class='info'>")
+                              $("#mis-personas").append("<td>" + val.idpersona+ "</td><td>" + val.nombre + "</td><td>" +val.empresa + "</td>")
+                              $("#mis-personas").append("</tr>")
+                            });
+                            
+                            
+                        }
+                    });
+                });
+                
+                
+            });
+        </script>
+
+    </head> 
+    <body> <center> <h2>Actualizar Datos</h2></center>
+
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="exampleInputName2">id</label>
+                <input type="text" class="form-control" id="id" placeholder="Id persona">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail2">actulizar empresa</label>
+                <input type="text" class="form-control" id="empresa" placeholder="empresa">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail2">actulizar edad</label>
+                <input type="text" class="form-control" id="edad" placeholder="edad">
+            </div>
+            <button id="guardar" type="button" class="btn btn-default">Actualizar datos</button>          
+        </form>
+        <div id="resultado"></div>      
+        <br>
+        <!--HASTA AQUI -->
+        <h2>Buscar todos </h2>
+        <button id="buscar-personas">Buscar todos </button>
+             
+         <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Id_persona</th>
+                    <th>Nombre </th>
+                    <th>Empresa</th>
+                    <th>edad</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="mis-personas">
+                
+            </tbody>
+        </table>
+        
+        
+    </body>
+</html>

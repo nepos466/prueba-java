@@ -1,0 +1,68 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Interfaz Busca ID Persona</title>
+
+        <script src="jquery-2.2.3.min.js" type="text/javascript"></script>
+         <link rel="stylesheet" href="bootstrap.css"/>
+        <script>
+            $(document).ready(function (e) {
+               
+                //Buscar todos 
+                $("#buscar-persona").click(function () {
+                    console.log("Buscaremos todos");
+                    
+                    $.ajax({   //para que se conecte a un servicio asincronicamente
+                        dataType: "json",  //va a recibir un formato json
+                        url: "ServletBuscarId",
+                        data:{
+                          id:$("#miid").val()
+                        },
+                        success: function (datos) { 
+                            console.log(" despues del seervlet");
+                            
+        //datos ahi se deposita todo el json 
+                            $("#mis-personas").html("");   //length dice cuantos elemntos tiene
+                            $.each(datos, function (key, val) {
+                              $("#mis-personas").append("<tr class='success'>")
+                              $("#mis-personas").append("<td>" + val.idpersona + "</td><td>" + val.nombre + "</td><td>" + val.empresa + "</td></td>"+val.edad+"</td></td>"+val.telefono+"</td>")
+                              $("#mis-personas").append("</tr>")
+                            });        
+                            
+                        }
+                    });
+                   
+                });
+       
+            });
+        </script>
+
+    </head> 
+    <body> 
+        <h2>Buscar Por ID</h2>
+      
+        <div class="form-group">
+                <label for="exampleInputName2">id</label>
+                <input type="text" class="form-control" id="miid" placeholder="Id Persona">
+         </div>
+            
+        <button id="buscar-persona">Buscar </button>
+          
+         <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Id_persona</th>
+                    <th>Nombre persona</th>
+                    <th>Empresa</th>
+                    <th>Edad</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody id="mis-personas">
+                
+            </tbody>
+        </table>
+               
+    </body>
+</html>

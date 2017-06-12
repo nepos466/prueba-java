@@ -1,0 +1,99 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Interfaz Borra persona</title>
+
+      <script src="jquery-2.2.3.min.js" type="text/javascript"></script>
+         <link rel="stylesheet" href="bootstrap.css"/>
+
+
+        <script>
+            $(document).ready(function (e) {
+                // alert("probando jquery");
+                $("#guardar").click(function () {
+                    $.ajax({
+                        //url:'http://localhost:9999/mensaje/'+$("#titulo").val()+'/'+$("#cuerpo").val(),
+                        url: 'ServletBorrar',  //BUSCAR ESTE METODO 
+                        type: 'post',
+                        data: {
+                            id: $("#id").val()
+                             
+                        },
+                        success: function (datos) {
+                            $("#resultado").html(datos);
+                            alert(datos);
+                        },
+                        failure: function () {
+                            alert("algo muy malo paso");
+                        }
+
+                    });
+                });//Termina guardar
+                //Buscar todos los productos
+                $("#buscar-persona").click(function () {
+                    console.log("Buscaremos todos");
+                    
+                    $.ajax({   //para que se conecte a un servicio asincronicamente
+                        dataType: "json",  //va a recibir un formato json
+                        url: "ServletBuscarId",
+                        data:{
+                          id:$("#miid").val()
+                        },
+                        success: function (datos) { 
+                            console.log(" despues del seervlet");
+                            
+        //datos ahi se deposita todo el json 
+                            $("#mis-personas").html("");   //length dice cuantos elemntos tiene
+                            $.each(datos, function (key, val) {
+                              $("#mis-personas").append("<tr class='success'>")
+                              $("#mis-personas").append("<td>" + val.idpersona + "</td><td>" + val.nombre + "</td><td>" + val.empresa + "</td></td>"+val.edad+"</td></td>"+val.telefono+"</td>")
+                              $("#mis-personas").append("</tr>")
+                            });        
+                            
+                            
+                        }
+                    });
+                });
+                
+                
+            });
+        </script>
+
+    </head> 
+    <body> 
+    <center> <h2>Borrar Libro </h2></center>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="exampleInputName2">id</label>
+                <input type="text" class="form-control" id="id" placeholder="Id de persona">
+            </div>
+         
+            <button id="borrar" type="button" class="btn btn-default">Borrar</button>          
+        </form>
+        <div id="resultado"></div>      
+        <br>
+        <!--HASTA AQUI -->
+        
+        
+        <h2>Buscar todo</h2>
+        <button id="buscar-persona">Buscar todos</button>
+             
+         <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Id_libro</th>
+                    <th>Nombre </th>
+                    <th>empresa</th>
+                    <th>edad</th>
+                    <th>telefono</th>
+                </tr>
+            </thead>
+            <tbody id="mis-personas">
+                
+            </tbody>
+        </table>
+        
+        
+    </body>
+</html>
